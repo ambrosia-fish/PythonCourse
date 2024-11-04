@@ -21,6 +21,10 @@ python -m venv cf-python-copy
 - Installed Visual Studio Code as the primary code editor
 - Created initial script `add.py` for basic number addition
 
+## Data Structure Choices
+
+For the Recipe app, I chose to use dictionaries for individual recipes and a list to store all recipes. Dictionaries are ideal for recipes because they allow key-value pairs that clearly label each piece of data (name, cooking time, ingredients), are mutable so recipes can be modified, and can store different data types (strings for names, integers for time, lists for ingredients). A list was chosen as the outer structure for all_recipes because it maintains order, allows easy addition/removal of recipes, and supports simple iteration through the collection.
+
 ## Project Structure
 
 ```
@@ -101,4 +105,3 @@ python add.py
 ## Maintenance
 
 This repository will be continuously updated throughout the course with new exercises and projects. Each exercise will be stored in its own dedicated folder for clear organization.
-
