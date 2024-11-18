@@ -264,6 +264,8 @@ def main():
         elif choice == "4":
             edit_recipe()
         elif choice == "5":
+            delete_recipe()
+        elif choice == "6":
             break
 
 if __name__ == "__main__":
