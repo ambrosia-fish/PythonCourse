@@ -133,4 +133,53 @@ def view_all_recipes():
         
     for recipe in recipes:
         print(recipe)
-        print("-" * 50)  # Separator between recipes
+        print("-" * 50) 
+
+
+def search_recipe():
+    count = session.query(Recipe).count()
+    if count == 0:
+        print("No recipes found.")
+        return None
+    
+    # Get all unique ingredients
+    results = session.query(Recipe.ingredients).all()
+    all_ingredients = []
+    
+    # Split ingredients and add to list if not already present
+    for recipe_ingredients in results:
+        ingredients_list = recipe_ingredients[0].split(", ")
+        for ingredient in ingredients_list:
+            if ingredient not in all_ingredients:
+                all_ingredients.append(ingredient)
+    
+    for i in range(len(all_ingredients)):
+        print(f"{i+1}. {all_ingredients[i]}")
+
+    search_input = input("Enter the ingredients you'd like to search for (separated by spaces): ")
+    search_numbers = search_input.split()
+
+    # Validate user inputs
+    for num in search_numbers:
+        if not num.isnumeric() or int(num) < 1 or int(num) > len(all_ingredients):
+            print("Invalid input. Numbers must correspond to the ingredient list.")
+            return None
+
+    # for ea
+    search_ingredients = [all_ingredients[int(num)-1] for num in search_numbers]
+    conditions = []
+
+    for ingredient in search_ingredients:
+        like_term = f"%{ingredient}%"
+        conditions.append(Recipe.ingredients.like(like_term))
+    
+    results = session.query(Recipe).filter(*conditions).all()
+
+    if not results:
+        print("No recipes found with those ingredients.")
+        return None
+
+    for recipe in results:
+        print(recipe)
+        print("-" * 50)
+
