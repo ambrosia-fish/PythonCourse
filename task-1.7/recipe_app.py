@@ -62,7 +62,7 @@ def create_recipe():
 
     n = get_valid_num_ingredients()
     for i in range(n):
-        ingredient = get_valid_ingredient_name() 
+        ingredient = get_valid_ingredient_name(f"Enter ingredient {i+1}: ") 
         ingredients.append(ingredient)
     
     # convert ingredient list into str:
@@ -112,9 +112,9 @@ def get_valid_num_ingredients():
             continue
         return int(num_ingredients)
     
-def get_valid_ingredient_name():
+def get_valid_ingredient_name(prompt):
     while True:
-        ingredient = input(f"Enter ingredient {i+1}: ")
+        ingredient = input(prompt)
         if len(ingredient.strip()) == 0:
             print("Ingredient name cannot be empty.")
             continue
@@ -122,3 +122,15 @@ def get_valid_ingredient_name():
             print("Ingredient name should contain only letters, spaces, and/or hyphens.")
             continue
         return ingredient
+
+# view_all_recipes function
+def view_all_recipes():
+    recipes = session.query(Recipe).all()
+    
+    if not recipes:
+        print("No recipes found.")
+        return None
+        
+    for recipe in recipes:
+        print(recipe)
+        print("-" * 50)  # Separator between recipes
