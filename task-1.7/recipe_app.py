@@ -31,6 +31,8 @@ class Recipe(Base):
                 f"Recipe Name: {self.name}\n"
                 f"Ingredients: {self.ingredients}\n"
                 f"Cooking Time: {self.cooking_time}")
+                f"Cooking Time: {self.cooking_time}\n"
+                f"Difficulty: {self.difficulty}")
 
     # def calculate difficulty            
     def calculate_difficulty(self):
