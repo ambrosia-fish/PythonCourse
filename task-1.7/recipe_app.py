@@ -51,6 +51,35 @@ class Recipe(Base):
         return self.ingredients.split(", ")
 
 Base.metadata.create_all(engine)# user input functions that request and valid user input for the various variables.
+# create recipe object from user inputs
+def create_recipe():
+    name = get_valid_recipe_name()
+    cooking_time = get_valid_cooking_time()
+    ingredients = []
+    difficulty = ""
+
+    n = get_valid_num_ingredients()
+    for i in range(n):
+        ingredient = get_valid_ingredient_name() 
+        ingredients.append(ingredient)
+    
+    # convert ingredient list into str:
+    ingredients_str = ", ".join(ingredients)
+
+    recipe_entry = Recipe(
+        name=name,
+        cooking_time=cooking_time,
+        ingredients=ingredients_str
+    )
+
+    recipe_entry.calculate_difficulty()
+
+     # add recipe to database
+    session.add(recipe_entry)
+    session.commit()
+
+
+# user input functions that request and valid user input for the various variables.
 def get_valid_recipe_name():
     while True:
         name = input("What is the title of the recipe? ")
