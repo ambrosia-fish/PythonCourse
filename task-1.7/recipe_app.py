@@ -30,7 +30,6 @@ class Recipe(Base):
         return (f"Recipe ID: {self.id}\n"
                 f"Recipe Name: {self.name}\n"
                 f"Ingredients: {self.ingredients}\n"
-                f"Cooking Time: {self.cooking_time}")
                 f"Cooking Time: {self.cooking_time}\n"
                 f"Difficulty: {self.difficulty}")
 
@@ -185,3 +184,58 @@ def search_recipe():
         print(recipe)
         print("-" * 50)
 
+def edit_recipe():
+    count = session.query(Recipe).count()
+    if count == 0:
+        print("No recipes found.")
+        return None
+    
+    results = session.query(Recipe.id, Recipe.name).all()
+    for recipe_id, recipe_name in results:
+        print(f"{recipe_id}. {recipe_name}")
+    
+    recipe_id = input("\nEnter recipe ID to edit: ")
+    if not recipe_id.isnumeric() or not any(str(id) == recipe_id for id, name in results):
+        print("Invalid recipe ID")
+        return None
+
+    print("\n1. Name\n2. Ingredients\n3. Cooking Time")
+    attribute = input("Enter number of attribute to edit: ")
+
+    if attribute == "1":
+        new_name = get_valid_recipe_name()
+        session.query(Recipe).filter(Recipe.id == recipe_id).update({Recipe.name: new_name})
+    elif attribute == "2":
+        ingredients = []
+        n = get_valid_num_ingredients()
+        for i in range(n):
+            ingredients.append(get_valid_ingredient_name(f"Enter ingredient {i+1}: "))
+        new_ingredients = ", ".join(ingredients)
+        session.query(Recipe).filter(Recipe.id == recipe_id).update({Recipe.ingredients: new_ingredients})
+    elif attribute == "3":
+        new_time = get_valid_cooking_time()
+        session.query(Recipe).filter(Recipe.id == recipe_id).update({Recipe.cooking_time: new_time})
+    else:
+        print("Invalid attribute number")
+        return None
+
+    recipe = session.query(Recipe).filter(Recipe.id == recipe_id).first()
+    recipe.calculate_difficulty()
+    session.commit()
+
+def main():
+    while True:
+        choice = input("\n1. Create Recipe\n2. View All Recipes\n3. Search Recipes\n4. Edit Recipe\n5. Exit\nYour choice: ")
+        if choice == "1":
+            create_recipe()
+        elif choice == "2":
+            view_all_recipes()
+        elif choice == "3":
+            search_recipe()
+        elif choice == "4":
+            edit_recipe()
+        elif choice == "5":
+            break
+
+if __name__ == "__main__":
+    main()
