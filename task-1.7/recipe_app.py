@@ -50,7 +50,9 @@ class Recipe(Base):
             return []
         return self.ingredients.split(", ")
 
-Base.metadata.create_all(engine)# user input functions that request and valid user input for the various variables.
+# create table
+Base.metadata.create_all(engine)
+
 # create recipe object from user inputs
 def create_recipe():
     name = get_valid_recipe_name()
