@@ -1,6 +1,6 @@
 # imports
 from sqlalchemy import create_engine, Column
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.types import Integer, String
 from sqlalchemy.orm import sessionmaker
 
