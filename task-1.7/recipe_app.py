@@ -227,6 +227,34 @@ def edit_recipe():
     recipe.calculate_difficulty()
     session.commit()
 
+def delete_recipe():
+    count = session.query(Recipe).count()
+    if count == 0:
+        print("No recipes found.")
+        return None
+    
+    results = session.query(Recipe.id, Recipe.name).all()
+    print("List of Recipes:")
+    for recipe_id, recipe_name in results:
+        print(f"{recipe_id}. {recipe_name}")
+    
+    recipe_id = input("\nEnter the ID of the recipe you’d like to delete: ")
+    
+    if not recipe_id.isnumeric() or not any(str(id) == recipe_id for id, name in results):
+        print("Invalid recipe ID. Please enter a valid ID from the list.")
+        return None
+    
+    recipe_to_delete = session.query(Recipe).filter(Recipe.id == recipe_id).first()
+    
+    confirmation = input(f"Are you sure you want to delete the recipe '{recipe_to_delete.name}' (ID: {recipe_to_delete.id})? (yes/no): ").strip().lower()
+    
+    if confirmation == "yes":
+        session.delete(recipe_to_delete)
+        session.commit()
+        print(f"Recipe '{recipe_to_delete.name}' has been deleted successfully.")
+    else:
+        print("Recipe deletion canceled.")
+
 def main():
     while True:
         choice = input("\n1. Create Recipe\n2. View All Recipes\n3. Search Recipes\n4. Edit Recipe\n5. Exit\nYour choice: ")
