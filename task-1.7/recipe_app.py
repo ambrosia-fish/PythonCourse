@@ -218,6 +218,10 @@ def edit_recipe():
     else:
         print("Invalid attribute number")
         return None
+    
+    session.query(Recipe).filter(Recipe.id == recipe_id).update(
+        {Recipe.name: new_name},  
+    )
 
     recipe = session.query(Recipe).filter(Recipe.id == recipe_id).first()
     recipe.calculate_difficulty()
