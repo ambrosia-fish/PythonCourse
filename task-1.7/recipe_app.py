@@ -157,7 +157,7 @@ def search_recipe():
     for i in range(len(all_ingredients)):
         print(f"{i+1}. {all_ingredients[i]}")
 
-    search_input = input("Enter the ingredients you'd like to search for (separated by spaces): ")
+    search_input = input("Enter the number of the ingredients you'd like to search for (separated by spaces): ")
     search_numbers = search_input.split()
 
     # Validate user inputs
@@ -218,10 +218,7 @@ def edit_recipe():
     else:
         print("Invalid attribute number")
         return None
-    
-    session.query(Recipe).filter(Recipe.id == recipe_id).update(
-        {Recipe.name: new_name},  
-    )
+
 
     recipe = session.query(Recipe).filter(Recipe.id == recipe_id).first()
     recipe.calculate_difficulty()
@@ -257,7 +254,7 @@ def delete_recipe():
 
 def main():
     while True:
-        choice = input("\n1. Create Recipe\n2. View All Recipes\n3. Search Recipes\n4. Edit Recipe\n5. Exit\nYour choice: ")
+        choice = input("\n1. Create Recipe\n2. View All Recipes\n3. Search Recipes\n4. Edit Recipe\n5. Delete Recipe\n6. Exit\nYour choice: ")
         if choice == "1":
             create_recipe()
         elif choice == "2":
