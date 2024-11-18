@@ -50,4 +50,44 @@ class Recipe(Base):
             return []
         return self.ingredients.split(", ")
 
-Base.metadata.create_all(engine)
+Base.metadata.create_all(engine)# user input functions that request and valid user input for the various variables.
+def get_valid_recipe_name():
+    while True:
+        name = input("What is the title of the recipe? ")
+        if len(name.strip()) == 0:
+            print("Recipe title cannot be empty.")
+            continue
+        if len(name.strip()) > 50:
+            print("Recipe title must be 50 characters or less.")
+            continue
+        if not name.replace(" ", "").isalnum():
+            print("Recipe name can only contain letters, numbers and spaces.")
+            continue
+        return name
+    
+def get_valid_cooking_time():
+    while True:
+        cooking_time = input("How long is the cooking time, in minutes? ")
+        if not cooking_time.isnumeric() or int(cooking_time) <= 0:
+            print("Cooking time needs to be a positive integer")
+            continue
+        return int(cooking_time)
+    
+def get_valid_num_ingredients():
+    while True:
+        num_ingredients = input("How many ingredients would you like to add to the recipe? ")
+        if not num_ingredients.isnumeric() or int(num_ingredients) <= 0:
+            print("Number of ingredients need to be a positive integer.")
+            continue
+        return int(num_ingredients)
+    
+def get_valid_ingredient_name():
+    while True:
+        ingredient = input(f"Enter ingredient {i+1}: ")
+        if len(ingredient.strip()) == 0:
+            print("Ingredient name cannot be empty.")
+            continue
+        if not ingredient.replace(" ", "").replace("-", "").isalpha():
+            print("Ingredient name should contain only letters, spaces, and/or hyphens.")
+            continue
+        return ingredient
